@@ -62,3 +62,7 @@ You need Java 11 to run test and application.
 ## To check dependencies and plugins versions
 
 `mvn versions:display-dependency-updates versions:display-plugin-updates`
+
+## To update the license
+
+`mvn validate license:format`
