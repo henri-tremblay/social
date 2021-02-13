@@ -12,46 +12,62 @@ Note: `=>` is the command prompt. Whatever is on the right it typed by the user.
 
 **Posting**: Alice can publish messages to a personal timeline
 
-> => Alice -> I love the weather today    
-> => Bob -> Damn! We lost!  
-> => Bob -> Good game though.
+```
+=> Alice -> I love the weather today    
+=> Bob -> Damn! We lost!  
+=> Bob -> Good game though.
+```
 
 **Reading**: Bob can view Alice’s timeline
 
-> => Alice
-> I love the weather today    
-> => Bob
-> Good game though.     
-> Damn! We lost!
+```
+=> Alice
+I love the weather today    
+=> Bob
+Good game though.     
+Damn! We lost!
+```
 
 **Following**: Charlie can subscribe to Alice’s and Bob’s timelines, and view an aggregated list of all subscriptions
 
-> => Charlie -> I'm in New York today! Anyone wants to have a coffee?     
-> => Charlie follows Alice    
-> => Charlie wall
-> Charlie - I'm in New York today! Anyone wants to have a coffee?    
-> Alice - I love the weather today
-
-> => Charlie follows Bob
-> => Charlie wall
-> Charlie - I'm in New York today! Anyone wants to have a coffee?     
-> Bob - Good game though.
-> Bob - Damn! We lost!     
-> Alice - I love the weather today
+```
+=> Charlie -> I'm in New York today! Anyone wants to have a coffee?     
+=> Charlie follows Alice    
+=> Charlie wall
+Charlie - I'm in New York today! Anyone wants to have a coffee?    
+Alice - I love the weather today
+```
+```
+=> Charlie follows Bob
+=> Charlie wall
+Charlie - I'm in New York today! Anyone wants to have a coffee?     
+Bob - Good game though.
+Bob - Damn! We lost!     
+Alice - I love the weather today
+```
 
 ## General requirements
 
 - Application must use the console for input and output
 - User submits commands to the application:
-    - posting: \<user name> -> \<message>
-    - reading: \<user name>
-    - following: \<user name> follows \<another user>
-    - wall: \<user name> wall
+    - posting: `<user name> -> <message>`
+    - reading: `<user name>`
+    - following: `<user name> follows <another user>`
+    - wall: `<user name> wall`
+    - exit: `exit`
 - Don't worry about handling any exceptions or invalid commands. 
 - Assume that the user will always type the correct commands. 
 - Just focus on the sunny day scenarios.
 
-**NOTE:** "posting:", "reading:", "following:" and "wall:" are not part of the command. All commands start with the user name.
+**NOTE:** All commands start with the username except `exit` that exits the application.
+
+## Acceptance tests
+
+Your will find acceptance tests with Cucumber in `src/test/resources`.
+When these tests pass, your job is done.
+You should not modify them.
+They also represent a more detailed specification compared to what's described above.
+Please read and run them to correctly understand the requirements.
 
 ## Configuration
 
@@ -66,3 +82,7 @@ You need Java 11 to run test and application.
 ## To update the license
 
 `mvn validate license:format`
+
+## To see JaCoCo, Spotbugs and Checkstyle reports
+
+`mvn test site -Dmaven.test.failure.ignore=true`
