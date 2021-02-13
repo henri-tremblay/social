@@ -15,6 +15,8 @@
  */
 package pro.tremblay.social;
 
+import pro.tremblay.social.util.Console;
+
 public final class SocialConsole {
 
     public static void main(String[] args) {
@@ -23,7 +25,8 @@ public final class SocialConsole {
     }
 
     public void start() {
-        System.out.println("Start socializing");
+        Console console = new Console();
+        console.write("Start socializing");
     }
 
 }
