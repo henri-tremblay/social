@@ -18,7 +18,7 @@ package pro.tremblay.social.uat;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import pro.tremblay.social.ConsoleTestingDSL;
+import pro.tremblay.social.util.ConsoleTestingDSL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

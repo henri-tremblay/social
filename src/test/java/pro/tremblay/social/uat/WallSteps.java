@@ -19,7 +19,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import pro.tremblay.social.ConsoleTestingDSL;
+import pro.tremblay.social.util.ConsoleTestingDSL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

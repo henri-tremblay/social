@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pro.tremblay.social;
+package pro.tremblay.social.util;
+
+import pro.tremblay.social.SocialConsole;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -51,10 +53,14 @@ public class ConsoleTestingDSL {
 
 	public String retrieveOutput() {
 		try {
-			return runSocialConsoleWith(userCommands);
+			return normalizeLineSeparator(runSocialConsoleWith(userCommands));
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
+	}
+
+	private String normalizeLineSeparator(String message) {
+		return message.replace(System.lineSeparator(), "\n");
 	}
 
 	private String runSocialConsoleWith(List<String> userCommands) throws IOException {
