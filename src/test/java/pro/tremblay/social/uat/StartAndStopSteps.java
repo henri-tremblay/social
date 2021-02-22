@@ -18,29 +18,33 @@ package pro.tremblay.social.uat;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import pro.tremblay.social.util.ConsoleTestingDSL;
+import pro.tremblay.social.util.TestContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StartAndStopSteps {
 
-	private ConsoleTestingDSL console;
+	TestContext testContext;
 
-	@Before
-	public void initialise() {
-		console = ConsoleTestingDSL.start();
+	public StartAndStopSteps(TestContext context) {
+		testContext = context;
 	}
 
-	@Given("^the application receives an 'exit' command$")
-	public void the_application_receives_an_exit_command() {
-		console.sendUserCommand("some user command");
-		console.sendUserCommand("exit");
+	@When("^the application receives an 'exit' command$")
+	public void when_the_application_receives_an_exit_command() {
+		testContext.console()
+				   .sendUserCommand("some user command");
+		testContext.console()
+				   .sendUserCommand("exit");
 	}
 
-	@Then("^the application should terminate$")
-	public void the_application_should_terminate() {
-		String output = console.retrieveOutput();
-		assertThat(output).isEqualTo("Start socializing\nbye!\n");
+	@Then("^the application should terminate:$")
+	public void then_the_application_should_terminate(String expected) {
+		String output = testContext.console()
+								   .retrieveOutput();
+		assertThat(output).isEqualTo(expected.replace("\n", "\r\n"));
 	}
 
 }

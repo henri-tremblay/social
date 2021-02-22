@@ -15,38 +15,46 @@
  */
 package pro.tremblay.social.uat;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pro.tremblay.social.util.ConsoleTestingDSL;
+import pro.tremblay.social.util.TestContext;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PostingAndReadingSteps {
 
-	private ConsoleTestingDSL console;
+	TestContext testContext;
 
-	@Before
-	public void initialise() {
-		console = ConsoleTestingDSL.start();
+	public PostingAndReadingSteps(TestContext context) {
+		testContext = context;
 	}
 
-	@Given("^Alice posts a few messages$")
-	public void alice_posts_a_few_messages() {
-		console.sendUserCommand("Alice -> Hello, my name is Alice");
-		console.sendUserCommand("Alice -> It's a lovely day today");
+	@Given("some messages are posted:")
+	public void given_some_messages_are_posted(DataTable table) {
+		List<Map<String, String>> rows = table.asMaps(String.class, String.class);
+		for (Map<String, String> columns : rows) {
+			testContext.console()
+					   .sendUserCommand(columns.get("User") + " -> " + columns.get("Message"));
+		}
 	}
 
-	@When("^Bob reads Alice's messages$")
-	public void bob_reads_Alice_s_messages() {
-		console.sendUserCommand("Alice");
+	@When("someone reads messages of {string}")
+	public void when_someone_reads_messages_of_given_user(String user) {
+		testContext.console()
+				   .sendUserCommand(user);
 	}
 
-	@Then("^Alice's messages are displayed in reverse chronological order$")
-	public void alice_s_messages_are_displayed_in_reverse_chronological_order() {
-		String output = console.retrieveOutput();
-		assertThat(output).isEqualTo("Start socializing\nAlice - It's a lovely day today\nAlice - Hello, my name is Alice\nbye!\n");
-
+	@Then("^the messages are displayed in reverse chronological order:$")
+	public void then_messages_are_displayed_in_reverse_chronological_order(String expected) {
+		String output = testContext.console()
+								   .retrieveOutput();
+		assertThat(output).isEqualTo(expected.replace("\n", "\r\n"));
 	}
 }
