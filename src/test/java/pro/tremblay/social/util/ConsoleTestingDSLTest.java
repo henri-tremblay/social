@@ -23,7 +23,7 @@ public class ConsoleTestingDSLTest {
 
     @Test
     public void test() {
-        ConsoleTestingDSL test = ConsoleTestingDSL.start();
+        ConsoleTestingDSL test = new ConsoleTestingDSL();
         assertThat(test.retrieveOutput()).isEqualTo("Start socializing\n");
     }
 

@@ -15,33 +15,26 @@
  */
 package pro.tremblay.social.uat;
 
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pro.tremblay.social.util.ConsoleTestingDSL;
-import pro.tremblay.social.util.TestContext;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class WallSteps {
 
-	TestContext testContext;
+	private final ConsoleTestingDSL console;
 
-	public WallSteps(TestContext context) {
-		testContext = context;
+	public WallSteps(ConsoleTestingDSL console) {
+		this.console = console;
 	}
 
 	@Given("{string} follows {string}")
 	public void given_user_follows_other(String user, String followed) {
-		testContext.console()
-				   .sendUserCommand(user + " follows " + followed);
+		console.sendUserCommand(user + " follows " + followed);
 	}
 
 	@When("{string} checks his wall")
 	public void when_user_checks_his_wall(String user) {
-		testContext.console()
-				   .sendUserCommand(user + " wall");
+		console.sendUserCommand(user + " wall");
 	}
 
 }

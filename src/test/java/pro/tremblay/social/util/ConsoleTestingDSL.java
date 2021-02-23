@@ -43,10 +43,6 @@ public class ConsoleTestingDSL {
 
 	private final List<String> userCommands = new ArrayList<>();
 
-	public static ConsoleTestingDSL start() {
-		return new ConsoleTestingDSL();
-	}
-
 	public void sendUserCommand(String userCommand) {
 		userCommands.add(userCommand + "\n");
 	}
