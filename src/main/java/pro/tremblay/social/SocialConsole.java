@@ -60,7 +60,7 @@ public final class SocialConsole {
             if (POSTING.equals(commands[1])) {
                 posting(commands[0], commands[2]);
             } else if (FOLLOWS.equals(commands[1])) {
-                console.write("Follows mode");
+                follow(commands[0], commands[2]);
             }
         }
 
@@ -70,8 +70,8 @@ public final class SocialConsole {
         return true;
     }
 
-    public void follow() {
-        
+    public void follow(String follower, String followed) {
+        userList.getUser(followed).addFollower(userList.getUser(follower));
     }
 
     public void posting(String userName, String body) {

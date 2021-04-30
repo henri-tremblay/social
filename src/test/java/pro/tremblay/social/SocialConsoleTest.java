@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import pro.tremblay.social.util.Console;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,14 +45,24 @@ class SocialConsoleTest {
                 .thenReturn("Henri")
                 .thenReturn("exit");
         socialConsole.start();
-        verify(console).write("Start socializing");
-        verify(console).write("Henri - Bonjour");
-        verify(console).write("Henri - Salut");
-        verify(console).write("bye!");
+        InOrder inOrder = Mockito.inOrder(console);
+        inOrder.verify(console).write("Start socializing");
+        inOrder.verify(console).write("Henri - Salut");
+        inOrder.verify(console).write("Henri - Bonjour");
+        inOrder.verify(console).write("bye!");
     }
 
     @Test
     void follow() {
+        when(console.readline())
+                .thenReturn("Henri follows Djamel")
+                .thenReturn("exit");
+        socialConsole.start();
+        verify(socialConsole).follow("Henri", "Djamel");
+    }
+
+    @Test
+    void wall() {
         when(console.readline())
                 .thenReturn("Henri -> Bonjour")
                 .thenReturn("Henri -> Salut")

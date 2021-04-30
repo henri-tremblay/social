@@ -1,20 +1,26 @@
 package pro.tremblay.social;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class User {
     private String username;
-    private List<User> followers;
+    private Set<User> followers;
     private List<Message> messages;
-    
+
     public User(String username){
-        this.followers = new ArrayList<>();
+        this.followers = new HashSet<>();
         this.messages = new ArrayList<>();
         this.username = username;
     }
 
-    public List<User> getFollowers() {
+    public void addFollower(User user) {
+        followers.add(user);
+    }
+
+    public Set<User> getFollowers() {
         return followers;
     }
 
@@ -30,5 +36,20 @@ public class User {
 
     public List<Message> getMessages() {
         return messages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return username.equals(user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return username.hashCode();
     }
 }
