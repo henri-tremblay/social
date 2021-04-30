@@ -1,21 +1,21 @@
 package pro.tremblay.social;
 
-import java.time.Instant;
-
 public class Message {
     private String body;
-    private final Instant timestamp;
+    private final int id;
+    private static int counterGlobal;
     
     public Message(String body){
         this.body = body;
-        this.timestamp = Instant.now();
+        this.id = counterGlobal++;
     }
 
     public String getBody() {
         return body;
     }
 
-    public Instant getTimestamp() {
-        return timestamp;
+
+    public int getId() {
+        return id;
     }
 }

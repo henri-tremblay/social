@@ -48,4 +48,21 @@ class SocialConsoleTest {
         verify(console).write("Henri - Salut");
         verify(console).write("bye!");
     }
+
+    @Test
+    void follow() {
+        when(console.readline())
+                .thenReturn("Henri -> Bonjour")
+                .thenReturn("Henri -> Salut")
+                .thenReturn("Djamel -> Hello")
+                .thenReturn("Henri follows Djamel")
+                .thenReturn("Henri wall")
+                .thenReturn("exit");
+        socialConsole.start();
+        verify(console).write("Start socializing");
+        verify(console).write("Djamel - Hello");
+        verify(console).write("Henri - Salut");
+        verify(console).write("Henri - Bonjour");
+        verify(console).write("bye!");
+    }
 }

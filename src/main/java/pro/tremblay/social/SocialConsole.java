@@ -71,7 +71,7 @@ public final class SocialConsole {
     }
 
     public void follow() {
-
+        
     }
 
     public void posting(String userName, String body) {
@@ -86,9 +86,8 @@ public final class SocialConsole {
     public void reading(String userName) {
         User user = userList.getUser(userName);
         List<Message> messages = user.getMessages();
-        //Collections.reverse(messages);
-        for (Message message : messages.stream().sorted(Comparator.comparing(Message::getTimestamp).reversed()).collect(Collectors.toList())) {
-            console.write(message.getTimestamp() + " : " + userName + " - " + message.getBody());
+        for (Message message : messages.stream().sorted(Comparator.comparing(Message::getId).reversed()).collect(Collectors.toList())) {
+            console.write(userName + " - " + message.getBody());
         }
     }
 }
