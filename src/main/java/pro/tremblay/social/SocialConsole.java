@@ -19,6 +19,10 @@ import pro.tremblay.social.util.Console;
 
 public final class SocialConsole {
 
+    public static final String POSTING = "->";
+    public static final String FOLLOWS = "follows";
+    public static final String EXIT = "exit";
+
     public static void main(String[] args) {
         SocialConsole console = new SocialConsole();
         console.start();
@@ -30,10 +34,14 @@ public final class SocialConsole {
         while (true) {
             String command = console.readline();
             String[] commands = command.split(" ");
-            if (commands.length > 2 && "->".equals(commands[1])) {
-                console.write("Posting mode");
+            if (commands.length > 2) {
+                if(POSTING.equals(commands[1])) {
+                    console.write("Posting mode");
+                } else if (FOLLOWS.equals(commands[1])) {
+                    console.write("Follows mode");
+                }
             }
-            if (command.equals("exit")) {
+            if (command.equals(EXIT)) {
                 console.write("bye!");
                 break;
             }
