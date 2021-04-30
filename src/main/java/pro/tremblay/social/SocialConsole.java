@@ -27,6 +27,13 @@ public final class SocialConsole {
     public void start() {
         Console console = new Console();
         console.write("Start socializing");
+        while(true) {
+            String command = console.readline();
+            if (command.equals("exit")) {
+                console.write("bye!");
+                break;
+            }
+        }
     }
 
 }
