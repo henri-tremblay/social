@@ -17,15 +17,19 @@ package pro.tremblay.social;
 
 import pro.tremblay.social.util.Console;
 
+import java.util.List;
+
 public final class SocialConsole {
 
     public static final String POSTING = "->";
     public static final String FOLLOWS = "follows";
     public static final String EXIT = "exit";
     private Console console;
+    private UserList userList;
 
     public SocialConsole(Console console) {
         this.console = console;
+        userList = new UserList();
     }
 
     public static void main(String[] args) {
@@ -44,14 +48,14 @@ public final class SocialConsole {
     }
 
     public boolean takeCommand(String command) {
-        String[] commands = command.split(" ");
+        String[] commands = command.split(" ",3);
         if (command.equals(EXIT)) {
             console.write("bye!");
             return false;
         }
         if (commands.length > 2) {
             if(POSTING.equals(commands[1])) {
-               posting();
+               posting(commands[0], commands[2]);
             } else if (FOLLOWS.equals(commands[1])) {
                 console.write("Follows mode");
             }
@@ -63,15 +67,21 @@ public final class SocialConsole {
 
     }
 
-    public void posting() {
+    public void posting(String userName, String body) {
         console.write("Posting mode");
+        User user = userList.getUser(userName);
+        user.addMessage(body);
     }
 
     public void wall() {
 
     }
 
-    public void reading() {
-
+    public void reading(String userName) {
+        User user = userList.getUser(userName);
+        List<Message> messages = user.getMessages();
+        for (Message message : messages) {
+            console.write(userName + " - " + message.getBody());
+        }
     }
 }

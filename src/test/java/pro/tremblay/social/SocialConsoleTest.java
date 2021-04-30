@@ -31,7 +31,7 @@ class SocialConsoleTest {
             .thenReturn("Henri -> Bonjour tout le monde")
             .thenReturn("exit");
         socialConsole.start();
-        verify(socialConsole).posting();
+        verify(socialConsole).posting("Henri", "Bonjour tout le monde");
     }
 
     @Test
