@@ -17,7 +17,10 @@ package pro.tremblay.social;
 
 import pro.tremblay.social.util.Console;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class SocialConsole {
 
@@ -48,17 +51,21 @@ public final class SocialConsole {
     }
 
     public boolean takeCommand(String command) {
-        String[] commands = command.split(" ",3);
+        String[] commands = command.split(" ", 3);
         if (command.equals(EXIT)) {
             console.write("bye!");
             return false;
         }
         if (commands.length > 2) {
-            if(POSTING.equals(commands[1])) {
-               posting(commands[0], commands[2]);
+            if (POSTING.equals(commands[1])) {
+                posting(commands[0], commands[2]);
             } else if (FOLLOWS.equals(commands[1])) {
                 console.write("Follows mode");
             }
+        }
+
+        if (commands.length == 1) {
+            reading(commands[0]);
         }
         return true;
     }
@@ -68,7 +75,6 @@ public final class SocialConsole {
     }
 
     public void posting(String userName, String body) {
-        console.write("Posting mode");
         User user = userList.getUser(userName);
         user.addMessage(body);
     }
@@ -80,8 +86,9 @@ public final class SocialConsole {
     public void reading(String userName) {
         User user = userList.getUser(userName);
         List<Message> messages = user.getMessages();
-        for (Message message : messages) {
-            console.write(userName + " - " + message.getBody());
+        //Collections.reverse(messages);
+        for (Message message : messages.stream().sorted(Comparator.comparing(Message::getTimestamp).reversed()).collect(Collectors.toList())) {
+            console.write(message.getTimestamp() + " : " + userName + " - " + message.getBody());
         }
     }
 }

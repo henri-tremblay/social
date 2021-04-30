@@ -43,6 +43,7 @@ class SocialConsoleTest {
                 .thenReturn("Henri")
                 .thenReturn("exit");
         socialConsole.start();
+        verify(console).write("Start socializing");
         verify(console).write("Henri - Bonjour");
         verify(console).write("Henri - Salut");
         verify(console).write("bye!");

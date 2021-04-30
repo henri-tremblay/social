@@ -24,7 +24,7 @@ public class User {
     
     public Message addMessage(String body) {
         Message message = new Message(body);
-        
+        messages.add(message);
         return message;
     }
 
