@@ -3,7 +3,7 @@ package pro.tremblay.social.util;
 import java.nio.charset.Charset;
 import java.util.Scanner;
 
-public final class Console {
+public class Console {
 
     private final Scanner scanner;
 

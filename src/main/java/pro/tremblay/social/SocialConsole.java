@@ -17,53 +17,53 @@ package pro.tremblay.social;
 
 import pro.tremblay.social.util.Console;
 
-import java.util.function.Function;
-
 public final class SocialConsole {
 
     public static final String POSTING = "->";
     public static final String FOLLOWS = "follows";
     public static final String EXIT = "exit";
-    private static SocialConsole console;
+    private Console console;
+
+    public SocialConsole(Console console) {
+        this.console = console;
+    }
 
     public static void main(String[] args) {
-        console = new SocialConsole();
+        SocialConsole console = new SocialConsole(new Console());
         console.start();
     }
 
     public void start() {
-        Console console = new Console();
         console.write("Start socializing");
         while (true) {
-            enterCommand();
+            String command = console.readline();
+            if (!takeCommand(command)) {
+                return;
+            }
         }
     }
 
-    public void enterCommand(){
-        String command = console.readline();
-        takeCommand(command, console);
-    }
-
-    public Function<Void, Void> takeCommand(String command, Console console) {
+    public boolean takeCommand(String command) {
         String[] commands = command.split(" ");
+        if (command.equals(EXIT)) {
+            console.write("bye!");
+            return false;
+        }
         if (commands.length > 2) {
             if(POSTING.equals(commands[1])) {
-                return posting(console);
+               posting();
             } else if (FOLLOWS.equals(commands[1])) {
                 console.write("Follows mode");
             }
         }
-        if (command.equals(EXIT)) {
-            console.write("bye!");
-            break;
-        }
+        return true;
     }
 
-    public void follow(Console console) {
+    public void follow() {
 
     }
 
-    public void posting(Console console) {
+    public void posting() {
         console.write("Posting mode");
     }
 
