@@ -27,8 +27,12 @@ public final class SocialConsole {
     public void start() {
         Console console = new Console();
         console.write("Start socializing");
-        while(true) {
+        while (true) {
             String command = console.readline();
+            String[] commands = command.split(" ");
+            if (commands.length > 2 && "->".equals(commands[1])) {
+                console.write("Posting mode");
+            }
             if (command.equals("exit")) {
                 console.write("bye!");
                 break;
