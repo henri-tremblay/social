@@ -17,14 +17,17 @@ package pro.tremblay.social;
 
 import pro.tremblay.social.util.Console;
 
+import java.util.function.Function;
+
 public final class SocialConsole {
 
     public static final String POSTING = "->";
     public static final String FOLLOWS = "follows";
     public static final String EXIT = "exit";
+    private static SocialConsole console;
 
     public static void main(String[] args) {
-        SocialConsole console = new SocialConsole();
+        console = new SocialConsole();
         console.start();
     }
 
@@ -32,20 +35,43 @@ public final class SocialConsole {
         Console console = new Console();
         console.write("Start socializing");
         while (true) {
-            String command = console.readline();
-            String[] commands = command.split(" ");
-            if (commands.length > 2) {
-                if(POSTING.equals(commands[1])) {
-                    console.write("Posting mode");
-                } else if (FOLLOWS.equals(commands[1])) {
-                    console.write("Follows mode");
-                }
-            }
-            if (command.equals(EXIT)) {
-                console.write("bye!");
-                break;
-            }
+            enterCommand();
         }
     }
 
+    public void enterCommand(){
+        String command = console.readline();
+        takeCommand(command, console);
+    }
+
+    public Function<Void, Void> takeCommand(String command, Console console) {
+        String[] commands = command.split(" ");
+        if (commands.length > 2) {
+            if(POSTING.equals(commands[1])) {
+                return posting(console);
+            } else if (FOLLOWS.equals(commands[1])) {
+                console.write("Follows mode");
+            }
+        }
+        if (command.equals(EXIT)) {
+            console.write("bye!");
+            break;
+        }
+    }
+
+    public void follow(Console console) {
+
+    }
+
+    public void posting(Console console) {
+        console.write("Posting mode");
+    }
+
+    public void wall() {
+
+    }
+
+    public void reading() {
+
+    }
 }
