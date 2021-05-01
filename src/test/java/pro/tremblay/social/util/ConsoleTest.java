@@ -32,7 +32,7 @@ class ConsoleTest {
     @Test
     void readline() {
         System.setIn(new ByteArrayInputStream("Hello world".getBytes()));
-        console = new Console();
+        console = new SystemConsole();
         String message = console.readline();
         assertThat(message).isEqualTo("Hello world");
     }
@@ -41,7 +41,7 @@ class ConsoleTest {
     void write() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out));
-        console = new Console();
+        console = new SystemConsole();
         console.write("Hello world");
         assertThat(out.toString()).isEqualTo("Hello world" + System.lineSeparator());
     }

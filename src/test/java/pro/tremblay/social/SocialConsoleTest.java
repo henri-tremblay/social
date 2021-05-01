@@ -1,80 +1,63 @@
 package pro.tremblay.social;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
-import pro.tremblay.social.util.Console;
+import pro.tremblay.social.util.RecordingConsole;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @Timeout(10)
 class SocialConsoleTest {
 
-    private Console console = mock(Console.class);
-    private SocialConsole socialConsole = spy(new SocialConsole(console));
+    private final RecordingConsole console = new RecordingConsole();
+    private final SocialConsole socialConsole = spy(new SocialConsole(console));
 
     @Test
     void exit() {
-        when(console.readline()).thenReturn("exit");
+        console.addLine("exit");
         socialConsole.start();
-        verify(console).write("bye!");
+        console.assertOutput("bye!");
     }
 
     @Test
     void posting() {
-        when(console.readline())
-            .thenReturn("Henri -> Bonjour tout le monde")
-            .thenReturn("exit");
+        console.addLine("Henri -> Bonjour tout le monde")
+               .addLine("exit");
         socialConsole.start();
         verify(socialConsole).posting("Henri", "Bonjour tout le monde");
     }
 
     @Test
     void reading() {
-        when(console.readline())
-                .thenReturn("Henri -> Bonjour")
-                .thenReturn("Henri -> Salut")
-                .thenReturn("Djamel -> Hello")
-                .thenReturn("Henri")
-                .thenReturn("exit");
+        console.addLine("Henri -> Bonjour")
+               .addLine("Henri -> Salut")
+               .addLine("Djamel -> Hello")
+               .addLine("Henri")
+               .addLine("exit");
         socialConsole.start();
-        InOrder inOrder = Mockito.inOrder(console);
-        inOrder.verify(console).write("Start socializing");
-        inOrder.verify(console).write("Henri - Salut");
-        inOrder.verify(console).write("Henri - Bonjour");
-        inOrder.verify(console).write("bye!");
+
+        console.assertOutput("Start socializing", "Henri - Salut", "Henri - Bonjour", "bye!");
     }
 
     @Test
     void follow() {
-        when(console.readline())
-                .thenReturn("Henri follows Djamel")
-                .thenReturn("exit");
+        console.addLine("Henri follows Djamel")
+               .addLine("exit");
         socialConsole.start();
         verify(socialConsole).follow("Henri", "Djamel");
     }
 
     @Test
     void wall() {
-        when(console.readline())
-                .thenReturn("Henri -> Bonjour")
-                .thenReturn("Henri -> Salut")
-                .thenReturn("Djamel -> Hello")
-                .thenReturn("Henri follows Djamel")
-                .thenReturn("Henri wall")
-                .thenReturn("exit");
+        console.addLine("Henri -> Bonjour")
+               .addLine("Henri -> Salut")
+               .addLine("Djamel -> Hello")
+               .addLine("Henri follows Djamel")
+               .addLine("Henri wall")
+               .addLine("exit");
         socialConsole.start();
-        verify(console).write("Start socializing");
-        verify(console).write("Djamel - Hello");
-        verify(console).write("Henri - Salut");
-        verify(console).write("Henri - Bonjour");
-        verify(console).write("bye!");
+
+        console.assertOutput("Start socializing", "Djamel - Hello", "Henri - Salut", "Henri - Bonjour", "bye!");
     }
 }

@@ -24,7 +24,7 @@ public class ConsoleTestingDSLTest {
     @Test
     public void test() {
         ConsoleTestingDSL test = new ConsoleTestingDSL();
-        assertThat(test.retrieveOutput()).isEqualTo("Start socializing\n");
+        assertThat(test.retrieveOutput()).isEqualTo("Start socializing\nbye!\n");
     }
 
 }

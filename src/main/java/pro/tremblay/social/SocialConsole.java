@@ -16,28 +16,45 @@
 package pro.tremblay.social;
 
 import pro.tremblay.social.util.Console;
+import pro.tremblay.social.util.SystemConsole;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class SocialConsole {
 
-    public static final String POSTING = "->";
-    public static final String FOLLOWS = "follows";
-    public static final String EXIT = "exit";
-    private Console console;
-    private UserList userList;
+    private static class UserMessage {
+        final User user;
+        final Message message;
+
+        public UserMessage(User user, Message message) {
+            this.user = user;
+            this.message = message;
+        }
+
+        public int getMessageId() {
+            return message.getId();
+        }
+    }
+
+    private static final String POSTING = "->";
+    private static final String FOLLOWS = "follows";
+    private static final String WALL = "wall";
+    private static final String EXIT = "exit";
+
+    private final Console console;
+    private final UserList userList = new UserList();
+
+    public static void main(String[] args) {
+        SocialConsole console = new SocialConsole(new SystemConsole());
+        console.start();
+    }
 
     public SocialConsole(Console console) {
         this.console = console;
-        userList = new UserList();
-    }
-
-    public static void main(String[] args) {
-        SocialConsole console = new SocialConsole(new Console());
-        console.start();
     }
 
     public void start() {
@@ -62,28 +79,43 @@ public final class SocialConsole {
             } else if (FOLLOWS.equals(commands[1])) {
                 follow(commands[0], commands[2]);
             }
-        }
-
-        if (commands.length == 1) {
+        } else if (commands.length == 2) {
+            if (WALL.equals(commands[1])) {
+                wall(commands[0]);
+            }
+        } else if (commands.length == 1) {
             reading(commands[0]);
         }
         return true;
     }
 
-    public void follow(String follower, String followed) {
-        userList.getUser(followed).addFollower(userList.getUser(follower));
+    void follow(String follower, String followed) {
+        userList.getUser(follower).addFollower(userList.getUser(followed));
     }
 
-    public void posting(String userName, String body) {
+    void posting(String userName, String body) {
         User user = userList.getUser(userName);
         user.addMessage(body);
     }
 
-    public void wall() {
+    void wall(String userName) {
+        User user = userList.getUser(userName);
+        Set<User> followers = user.getFollowers();
+        Stream<UserMessage> myMessages = user.getMessages()
+                .stream()
+                .map(message -> new UserMessage(user, message));
 
+        Stream<UserMessage> otherMessages = followers.stream()
+                .flatMap(u -> u.getMessages().stream()
+                        .map(m -> new UserMessage(u, m)));
+
+        Stream.concat(myMessages, otherMessages)
+                .sorted(Comparator.comparingInt(UserMessage::getMessageId).reversed())
+                .map(tuple -> tuple.user.getUsername() + " - " + tuple.message.getBody())
+                .forEachOrdered(console::write);
     }
 
-    public void reading(String userName) {
+    void reading(String userName) {
         User user = userList.getUser(userName);
         List<Message> messages = user.getMessages();
         for (Message message : messages.stream().sorted(Comparator.comparing(Message::getId).reversed()).collect(Collectors.toList())) {
@@ -91,3 +123,5 @@ public final class SocialConsole {
         }
     }
 }
+
+
