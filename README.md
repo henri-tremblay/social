@@ -68,7 +68,7 @@ Please read and run them to correctly understand the requirements.
 
 ## Configuration
 
-You need Java 11 to run test and application.
+You need Java 8 to run test and application.
 
 ### Tooling
 

@@ -23,12 +23,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ConsoleTestingDSL {
+
+	private static final int TRANSFER_BUFFER_SIZE = 8192;
 
 	private static final String javaClasspath;
 	private static final String javaExec;
@@ -87,9 +92,18 @@ public class ConsoleTestingDSL {
 		BufferedReader processReader = reader(process);
 		ByteArrayOutputStream bOut = new ByteArrayOutputStream();
 		OutputStreamWriter out = new OutputStreamWriter(bOut);
-		processReader.transferTo(out);
+		transferTo(processReader, out);
 		out.flush();
 		return bOut.toString();
+	}
+
+	private void transferTo(Reader in, Writer out) throws IOException {
+		Objects.requireNonNull(out, "out");
+		char[] buffer = new char[TRANSFER_BUFFER_SIZE];
+		int nRead;
+		while ((nRead = in.read(buffer, 0, TRANSFER_BUFFER_SIZE)) >= 0) {
+			out.write(buffer, 0, nRead);
+		}
 	}
 
 	private void addExitCommandTo(List<String> userCommands) {

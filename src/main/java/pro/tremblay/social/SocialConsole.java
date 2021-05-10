@@ -16,16 +16,23 @@
 package pro.tremblay.social;
 
 import pro.tremblay.social.util.Console;
+import pro.tremblay.social.util.SystemConsole;
 
 public final class SocialConsole {
 
+    private final Console console;
+
+    public SocialConsole(Console console) {
+        this.console = console;
+    }
+
     public static void main(String[] args) {
-        SocialConsole console = new SocialConsole();
-        console.start();
+        Console console = new SystemConsole();
+        SocialConsole socialConsole = new SocialConsole(console);
+        socialConsole.start();
     }
 
     public void start() {
-        Console console = new Console();
         console.write("Start socializing");
     }
 
