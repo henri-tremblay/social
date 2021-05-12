@@ -18,6 +18,9 @@ package pro.tremblay.social;
 import pro.tremblay.social.util.Console;
 import pro.tremblay.social.util.SystemConsole;
 
+import java.util.List;
+import java.util.Map;
+
 public final class SocialConsole {
 
     private final Console console;
@@ -40,6 +43,14 @@ public final class SocialConsole {
                 console.write("bye!");
                 break;
             }
+            if (line.contains("->")){
+                String [] splitToken = line.split(" -> ");
+                Map <String, List<String>> map;
+            }
+            if (line.contains("follows")){
+                console.write("Posting!");
+            }
+
         }
     }
 
