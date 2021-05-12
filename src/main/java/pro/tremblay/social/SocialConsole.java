@@ -36,6 +36,7 @@ public final class SocialConsole {
 
     public void start() {
         Map<String, List<String>> messages = new HashMap<>();
+        Map<String, List<String>> followers = new HashMap<>();
         console.write("Start socializing");
         while (true) {
             String line = console.readline();
@@ -51,20 +52,29 @@ public final class SocialConsole {
                     List<String> messageList = new ArrayList<>();
                     messages.put(username, messageList);
                 }
-
-
                 messages.get(username).add(message);
                 continue;
 
             }
-
-
             if (line.contains("follows")) {
-                console.write("Posting!");
-
-
+                String[] splitToken = line.split(" follows ");
+                String follower = splitToken[0];
+                String followed = splitToken[1];
+                if (!followers.containsKey(follower)) {
+                    List<String> followedList = new ArrayList<>();
+                    followers.put(followed, followedList);
+                }
+                followers.get(follower).add(followed);
+                continue;
             }
-            messages.get(line).stream().sorted(Comparator.naturalOrder().reversed()) .forEach(message -> console.write(line + " - " + message));
+            if (line.contains("wall")) {
+                String username = line.split(" wall")[0];
+                System.out.println(username);
+                continue;
+            }
+            messages.get(line).stream()
+                    .sorted(Comparator.<String>naturalOrder().reversed())
+                    .forEach(message -> console.write(line + " - " + message));
 
         }
     }
