@@ -18,10 +18,7 @@ package pro.tremblay.social;
 import pro.tremblay.social.util.Console;
 import pro.tremblay.social.util.SystemConsole;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class SocialConsole {
 
@@ -38,27 +35,36 @@ public final class SocialConsole {
     }
 
     public void start() {
-        Map <String, List<String>> messages = new HashMap<>();
+        Map<String, List<String>> messages = new HashMap<>();
         console.write("Start socializing");
-        while(true) {
+        while (true) {
             String line = console.readline();
             if (line.equals("exit")) {
                 console.write("bye!");
                 break;
             }
-            if (line.contains("->")){
-                String [] splitToken = line.split(" -> ");
+            if (line.contains("->")) {
+                String[] splitToken = line.split(" -> ");
                 String username = splitToken[0];
                 String message = splitToken[1];
                 if (!messages.containsKey(username)) {
                     List<String> messageList = new ArrayList<>();
                     messages.put(username, messageList);
                 }
+
+
                 messages.get(username).add(message);
+                continue;
+
             }
-            if (line.contains("follows")){
+
+
+            if (line.contains("follows")) {
                 console.write("Posting!");
+
+
             }
+            messages.get(line).stream().sorted(Comparator.naturalOrder().reversed()) .forEach(message -> console.write(line + " - " + message));
 
         }
     }
