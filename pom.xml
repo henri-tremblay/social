@@ -41,9 +41,11 @@
         <java.version>11</java.version>
 
         <assertj.version>3.19.0</assertj.version>
-        <cucumber.version>6.9.1</cucumber.version>
-        <junit.version>5.7.1</junit.version>
-        <mockito.version>3.7.7</mockito.version>
+        <cucumber.version>6.10.4</cucumber.version>
+        <junit.version>5.7.2</junit.version>
+        <mockito.version>3.10.0</mockito.version>
+
+        <spotbugs-maven-plugin.version>4.2.3</spotbugs-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -200,7 +202,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>3.0</version>
+                <version>4.0</version>
                 <configuration>
                     <header>${project.basedir}/header.txt</header>
                     <strictCheck>true</strictCheck>
@@ -237,14 +239,14 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.40</version>
+                        <version>8.42</version>
                     </dependency>
                 </dependencies>
             </plugin>
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.2.0</version>
+                <version>${spotbugs-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>spotbugs</id>
@@ -297,7 +299,7 @@
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
-                <version>4.2.0</version>
+                <version>${spotbugs-maven-plugin}</version>
                 <configuration>
                     <xmlOutput>true</xmlOutput>
                 </configuration>
