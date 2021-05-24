@@ -3,7 +3,6 @@ package pro.tremblay.social;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import pro.tremblay.social.util.RecordingConsole;
-import pro.tremblay.social.util.SimpleCommand;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,39 +12,52 @@ class SocialConsoleTest {
     RecordingConsole console = new RecordingConsole();
     SocialConsole socialConsole;
 
-    private void uselessLine() {
-        console.addLine("unused");
-    }
-
     @Test
-    void continueAndExit() {
-        uselessLine();
-
-        SimpleCommand command = new SimpleCommand(CommandStatus.CONTINUE, CommandStatus.EXIT);
-
-        socialConsole = new SocialConsole(console, command, command);
+    void stopOnExit() {
+        console.addLine("useless");
+        socialConsole = new SocialConsole(console, tokens -> CommandStatus.EXIT);
         socialConsole.start();
-
-        assertThat(command.called(0)).isTrue();
-        assertThat(command.called(1)).isTrue();
+    }
+    @Test
+    void takeCommand_exit() {
+        socialConsole = new SocialConsole(console, tokens -> CommandStatus.EXIT);
+        assertThat(socialConsole.takeCommand("unused")).isFalse();
     }
 
     @Test
-    void handledExit() {
-        uselessLine();
-        uselessLine();
-
-        SimpleCommand command = new SimpleCommand(CommandStatus.HANDLED, CommandStatus.EXIT);
-
-        socialConsole = new SocialConsole(console, command, command);
-        socialConsole.start();
-
-        assertThat(command.called(0)).isTrue();
-        assertThat(command.called(1)).isTrue();
+    void takeCommand_handled() {
+        socialConsole = new SocialConsole(console, tokens -> CommandStatus.HANDLED);
+        assertThat(socialConsole.takeCommand("unused")).isTrue();
     }
 
     @Test
-    public void parseLine() {
+    void takeCommand_unknown() {
+        socialConsole = new SocialConsole(console, tokens -> CommandStatus.CONTINUE);
+        assertThat(socialConsole.takeCommand("unused")).isTrue();
+    }
+
+    @Test
+    void takeCommand_multipleCommands() {
+        boolean[] called = { false, false, false };
+        socialConsole = new SocialConsole(console,
+                tokens -> {
+                    called[0] = true;
+                    return CommandStatus.CONTINUE;
+                },
+                tokens ->  {
+                    called[1] = true;
+                    return CommandStatus.HANDLED;
+                },
+                tokens -> {
+                    called[2] = true;
+                    return CommandStatus.CONTINUE;
+                });
+        assertThat(socialConsole.takeCommand("unused")).isTrue();
+        assertThat(called).containsExactly(true, true, false);
+    }
+
+    @Test
+    void parseLine() {
         socialConsole = new SocialConsole(console);
         assertThat(socialConsole.parseLine("")).containsExactly("");
         assertThat(socialConsole.parseLine("Alice")).containsExactly("Alice");
