@@ -12,11 +12,11 @@ public class Message {
         this.id = counterGlobal++;
     }
 
-    public String getBody() {
+    public String body() {
         return body;
     }
 
-    public int getId() {
+    public int id() {
         return id;
     }
 }

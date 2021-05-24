@@ -3,61 +3,53 @@ package pro.tremblay.social;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import pro.tremblay.social.util.RecordingConsole;
+import pro.tremblay.social.util.SimpleCommand;
 
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Timeout(10)
 class SocialConsoleTest {
 
-    private final RecordingConsole console = new RecordingConsole();
-    private final SocialConsole socialConsole = spy(new SocialConsole(console));
+    RecordingConsole console = new RecordingConsole();
+    SocialConsole socialConsole;
 
-    @Test
-    void exit() {
-        console.addLine("exit");
-        socialConsole.start();
-        console.assertOutput("bye!");
+    private void uselessLine() {
+        console.addLine("unused");
     }
 
     @Test
-    void posting() {
-        console.addLine("Henri -> Bonjour tout le monde")
-               .addLine("exit");
+    void continueAndExit() {
+        uselessLine();
+
+        SimpleCommand command = new SimpleCommand(CommandStatus.CONTINUE, CommandStatus.EXIT);
+
+        socialConsole = new SocialConsole(console, command, command);
         socialConsole.start();
-        verify(socialConsole).posting("Henri", "Bonjour tout le monde");
+
+        assertThat(command.called(0)).isTrue();
+        assertThat(command.called(1)).isTrue();
     }
 
     @Test
-    void reading() {
-        console.addLine("Henri -> Bonjour")
-               .addLine("Henri -> Salut")
-               .addLine("Djamel -> Hello")
-               .addLine("Henri")
-               .addLine("exit");
+    void handledExit() {
+        uselessLine();
+        uselessLine();
+
+        SimpleCommand command = new SimpleCommand(CommandStatus.HANDLED, CommandStatus.EXIT);
+
+        socialConsole = new SocialConsole(console, command, command);
         socialConsole.start();
 
-        console.assertOutput("Start socializing", "Henri - Salut", "Henri - Bonjour", "bye!");
+        assertThat(command.called(0)).isTrue();
+        assertThat(command.called(1)).isTrue();
     }
 
     @Test
-    void follow() {
-        console.addLine("Henri follows Djamel")
-               .addLine("exit");
-        socialConsole.start();
-        verify(socialConsole).follow("Henri", "Djamel");
-    }
-
-    @Test
-    void wall() {
-        console.addLine("Henri -> Bonjour")
-               .addLine("Henri -> Salut")
-               .addLine("Djamel -> Hello")
-               .addLine("Henri follows Djamel")
-               .addLine("Henri wall")
-               .addLine("exit");
-        socialConsole.start();
-
-        console.assertOutput("Start socializing", "Djamel - Hello", "Henri - Salut", "Henri - Bonjour", "bye!");
+    public void parseLine() {
+        socialConsole = new SocialConsole(console);
+        assertThat(socialConsole.parseLine("")).containsExactly("");
+        assertThat(socialConsole.parseLine("Alice")).containsExactly("Alice");
+        assertThat(socialConsole.parseLine("Alice wall")).containsExactly("Alice", "wall");
+        assertThat(socialConsole.parseLine("Alice -> the message")).containsExactly("Alice", "->", "the message");
     }
 }

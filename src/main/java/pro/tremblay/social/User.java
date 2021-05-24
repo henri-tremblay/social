@@ -9,21 +9,21 @@ import java.util.Set;
 
 public class User {
     private final String username;
-    private final Set<User> followers;
+    private final Set<User> followed;
     private final List<Message> messages;
 
-    public User(String username){
-        this.followers = new HashSet<>();
+    public User(String username) {
+        this.followed = new HashSet<>();
         this.messages = new ArrayList<>();
         this.username = Objects.requireNonNull(username);
     }
 
-    public void addFollower(User user) {
-        followers.add(user);
+    public void addFollowed(User user) {
+        followed.add(user);
     }
 
-    public Set<User> getFollowers() {
-        return Collections.unmodifiableSet(followers);
+    public Set<User> getFollowed() {
+        return Collections.unmodifiableSet(followed);
     }
 
     public String getUsername() {
@@ -41,16 +41,24 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         User user = (User) o;
-
         return username.equals(user.username);
     }
 
     @Override
     public int hashCode() {
         return username.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "User(" + username + ')';
     }
 }

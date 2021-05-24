@@ -3,7 +3,6 @@ package pro.tremblay.social;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MessageTest {
 
@@ -11,12 +10,12 @@ class MessageTest {
 
     @Test
     void getBody() {
-        assertThat(message.getBody()).isEqualTo("Test 1");
+        assertThat(message.body()).isEqualTo("Test 1");
     }
 
     @Test
     void getId() {
         Message otherMessage = new Message("Other");
-        assertThat(otherMessage.getId()).isGreaterThan(message.getId());
+        assertThat(otherMessage.id()).isGreaterThan(message.id());
     }
 }
