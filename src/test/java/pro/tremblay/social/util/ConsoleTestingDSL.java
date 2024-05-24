@@ -71,13 +71,14 @@ public class ConsoleTestingDSL {
 
 	private void sendUserCommandsToProcess(List<String> userCommands, Process process) {
 		addExitCommandTo(userCommands);
-		PrintWriter processWriter = writer(process);
-		for(String userCommand: userCommands) {
-			if (!isProcessAlive(process)) {
-				throw new IllegalStateException("Application crashed with status " + process.exitValue());
+		try (PrintWriter processWriter = writer(process)) {
+			for (String userCommand : userCommands) {
+				if (!isProcessAlive(process)) {
+					throw new IllegalStateException("Application crashed with status " + process.exitValue());
+				}
+				processWriter.write(userCommand);
+				processWriter.flush();
 			}
-			processWriter.write(userCommand);
-			processWriter.flush();
 		}
 	}
 
@@ -86,12 +87,13 @@ public class ConsoleTestingDSL {
 	}
 
 	private String readOutputFrom(Process process) throws IOException {
-		BufferedReader processReader = reader(process);
-		ByteArrayOutputStream bOut = new ByteArrayOutputStream();
-		OutputStreamWriter out = new OutputStreamWriter(bOut);
-		processReader.transferTo(out);
-		out.flush();
-		return bOut.toString();
+		try (BufferedReader processReader = reader(process)) {
+			ByteArrayOutputStream bOut = new ByteArrayOutputStream();
+			OutputStreamWriter out = new OutputStreamWriter(bOut);
+			processReader.transferTo(out);
+			out.flush();
+			return bOut.toString();
+		}
 	}
 
 	private void addExitCommandTo(List<String> userCommands) {
