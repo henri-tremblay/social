@@ -60,7 +60,9 @@ public class ConsoleTestingDSL {
 	}
 
 	private String runSocialConsoleWith(List<String> userCommands) throws IOException {
-		Process process = execute(javaExec, "-cp", javaClasspath, SocialConsole.class.getName());
+		Process process = execute(javaExec,
+//				"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005",
+				"-cp", javaClasspath, SocialConsole.class.getName());
 
 		sendUserCommandsToProcess(userCommands, process);
 
