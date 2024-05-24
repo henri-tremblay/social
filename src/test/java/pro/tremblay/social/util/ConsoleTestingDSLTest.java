@@ -15,14 +15,14 @@
  */
 package pro.tremblay.social.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ConsoleTestingDSLTest {
+class ConsoleTestingDSLTest {
 
     @Test
-    public void test() {
+    void test() {
         ConsoleTestingDSL test = new ConsoleTestingDSL();
         assertThat(test.retrieveOutput()).isEqualTo("Start socializing\n");
     }

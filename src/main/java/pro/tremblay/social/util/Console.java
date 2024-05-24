@@ -23,7 +23,7 @@ public final class Console {
     private final Scanner scanner;
 
     public Console() {
-        scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in, Charset.defaultCharset());
     }
 
     public String readline() {

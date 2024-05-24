@@ -15,12 +15,13 @@
  */
 package pro.tremblay.social.uat;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-import org.junit.runner.RunWith;
+import org.junit.platform.suite.api.IncludeEngines;
+import org.junit.platform.suite.api.SelectPackages;
+import org.junit.platform.suite.api.Suite;
 
-@RunWith(Cucumber.class)
-@CucumberOptions()
-public class RunCukesTest {
+@Suite
+@IncludeEngines("cucumber")
+@SelectPackages("pro.tremblay.social.uat")
+class RunCukesTest {
 
 }
