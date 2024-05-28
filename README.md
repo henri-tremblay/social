@@ -8,7 +8,7 @@ I've tweaked it to my liking.
 
 ## Scenarios
 
-Note: `=>` is the command prompt. Whatever is on the right it typed by the user.
+Note: Below, `=>` is the command prompt. Whatever is on the right of it is typed by the user.
 
 **Posting**: Users can publish messages to a personal timeline
 
