@@ -19,7 +19,7 @@ import pro.tremblay.social.util.Console;
 
 public final class SocialConsole {
 
-    public static void main(String[] args) {
+    static void main() {
         SocialConsole console = new SocialConsole();
         console.start();
     }

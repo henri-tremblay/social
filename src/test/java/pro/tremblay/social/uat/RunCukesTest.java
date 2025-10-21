@@ -15,13 +15,19 @@
  */
 package pro.tremblay.social.uat;
 
+import org.junit.platform.suite.api.ConfigurationParameter;
+import org.junit.platform.suite.api.ConfigurationParametersResource;
 import org.junit.platform.suite.api.IncludeEngines;
 import org.junit.platform.suite.api.SelectPackages;
 import org.junit.platform.suite.api.Suite;
 
+import static io.cucumber.junit.platform.engine.Constants.ANSI_COLORS_DISABLED_PROPERTY_NAME;
+
 @Suite
 @IncludeEngines("cucumber")
 @SelectPackages("pro.tremblay.social.uat")
+@ConfigurationParametersResource("cucumber.properties")
+@ConfigurationParameter(key = ANSI_COLORS_DISABLED_PROPERTY_NAME, value = "true")
 class RunCukesTest {
 
 }
