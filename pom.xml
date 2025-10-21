@@ -17,7 +17,7 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pro.tremblay</groupId>
@@ -29,7 +29,7 @@
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -47,6 +47,7 @@
 
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <pitest-maven.version>1.17.4</pitest-maven.version>
         <spotbugs-maven-plugin.version>4.9.8.1</spotbugs-maven-plugin.version>
     </properties>
 
@@ -138,6 +139,10 @@
                     <version>3.1.4</version>
                 </plugin>
                 <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+                <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>3.6.2</version>
                 </plugin>
@@ -181,14 +186,19 @@
                     <version>5.0.0</version>
                 </plugin>
                 <plugin>
-                    <groupId>com.github.spotbugs</groupId>
-                    <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>${spotbugs-maven-plugin.version}</version>
-                </plugin>
-                <plugin>
                     <groupId>com.keyboardsamurais.maven</groupId>
                     <artifactId>maven-timestamp-plugin</artifactId>
                     <version>1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.pitest</groupId>
+                    <artifactId>pitest-maven</artifactId>
+                    <version>${pitest-maven.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${spotbugs-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -322,6 +332,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <configuration>
+                    <!-- these properties have a command line equivalent that is ${threads} and ${verbose}. I found that too generic and prefer to keep it here -->
+                    <threads>4</threads>
+                    <verbose>true</verbose>
+                </configuration>
             </plugin>
         </plugins>
     </build>
