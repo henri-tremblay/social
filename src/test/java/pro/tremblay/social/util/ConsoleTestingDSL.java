@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UncheckedIOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class ConsoleTestingDSL {
 
 	static {
 		String javaHome = System.getProperty("java.home");
-		javaExec = Paths.get(javaHome, "bin", "java").toString();
+		javaExec = Path.of(javaHome, "bin", "java").toString();
 		javaClasspath = System.getProperty("java.class.path");
 	}
 
