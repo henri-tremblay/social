@@ -20,17 +20,12 @@ import java.util.Scanner;
 
 public final class Console {
 
-    private final Scanner scanner;
-
-    public Console() {
-        scanner = new Scanner(System.in, Charset.defaultCharset());
-    }
-
     public String readline() {
-        return scanner.nextLine();
+        return IO.readln();
     }
 
     public void write(String output) {
-        System.out.println(output);
+        IO.println(output);
     }
+
 }
