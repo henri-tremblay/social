@@ -1,6 +1,6 @@
 # Social Networking Kata
 
-Implement a console-based social networking application (similar to Twitter) satisfying the scenarios below.
+Implement a console-based social networking application (similar to Bluesky) satisfying the scenarios below.
 
 It's a classical Kata created by [Sandro Mancuso](https://github.com/sandromancuso/twitter-kata-java).
 
@@ -29,6 +29,7 @@ Bob - Damn! We lost!
 ```
 
 **Following**: Users can subscribe to others' timelines, and view an aggregated list of all subscriptions
+
 ```
 => Charlie -> I'm in New York today! Anyone wants to have a coffee?
 => Charlie follows Alice
@@ -68,7 +69,7 @@ Please read and run them to correctly understand the requirements.
 
 ## Configuration
 
-You need Java 17 to run test and application.
+You need Java 25 to run test and application.
 
 ### Tooling
 
